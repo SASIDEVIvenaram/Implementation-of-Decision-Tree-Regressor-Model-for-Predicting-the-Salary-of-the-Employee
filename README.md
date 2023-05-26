@@ -8,42 +8,33 @@ To write a program to implement the Decision Tree Regressor Model for Predicting
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Prepare your data-
- ```
-Clean and format your data
-Split your data into training and testing sets
+1.Prepare your data
 ```
-2. Define your model
+-Collect and clean data on employee salaries and features
+-Split data into training and testing sets
 ```
-Use a sigmoid function to map inputs to outputs
-Initialize weights and bias terms
+2.Define your model
 ```
-3. Define your cost function
+-Use a Decision Tree Regressor to recursively partition data based on input features
+-Determine maximum depth of tree and other hyperparameters
 ```
-Use binary cross-entropy loss function
-Penalize the model for incorrect predictions
+3.Train your model
 ```
-4. Define your learning rate
+-Fit model to training data
+-Calculate mean salary value for each subset
 ```
-Determines how quickly weights are updated during gradient descent
+4.Evaluate your model
 ```
-6.Train your model
+-Use model to make predictions on testing data
+-Calculate metrics such as MAE and MSE to evaluate performance
 ```
-Adjust weights and bias terms using gradient descent
-Iterate until convergence or for a fixed number of iterations
+5.Tune hyperparameters
 ```
-6.Evaluate your model
+-Experiment with different hyperparameters to improve performance
 ```
-Test performance on testing data
-Use metrics such as accuracy, precision, recall, and F1 score
+6.Deploy your model
 ```
-7.Tune hyperparameters
-```
-Experiment with different learning rates and regularization techniques
-```
-8.Deploy your model
-```
-Use trained model to make predictions on new data in a real-world application.
+Use model to make predictions on new data in real-world application.
 ```
 
 ## Program:
@@ -54,57 +45,60 @@ Developed by: SASIDEVI V
 RegisterNumber:  212222230136
 */
 import pandas as pd
-data=pd.read_csv("Employee.csv")
-
+data=pd.read_csv("Salary.csv")
 data.head()
 
 data.info()
 
 data.isnull().sum()
 
-data["left"].value_counts()
-
 from sklearn.preprocessing import LabelEncoder
 le=LabelEncoder()
-data["salary"]=le.fit_transform(data["salary"])
+
+data["Position"]=le.fit_transform(data["Position"])
 data.head()
 
-x=data[["satisfaction_level","last_evaluation","number_project","average_montly_hours","time_spend_company","Work_accident","promotion_last_5years","salary"]]
+x=data[["Position","Level"]]
 x.head()
 
-y=data["left"]
+y=data[["Salary"]]
 
 from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=100)
+x_train, x_test, y_train, y_test=train_test_split(x,y,test_size=0.2,random_state=2)
 
-from sklearn.tree import DecisionTreeClassifier
-dt=DecisionTreeClassifier(criterion="entropy")
+from sklearn.tree import DecisionTreeRegressor
+dt=DecisionTreeRegressor()
 dt.fit(x_train,y_train)
 y_pred=dt.predict(x_test)
 
 from sklearn import metrics
-accuracy=metrics.accuracy_score(y_test,y_pred)
-accuracy
+mse=metrics.mean_squared_error(y_test, y_pred)
+mse
 
-dt.predict([[0.5,0.8,9,260,6,0,1,2]])
+r2=metrics.r2_score(y_test,y_pred)
+r2
+
+dt.predict([[5,6]])
 ```
 
 ## Output:
-### Initial data set:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/f8deb36a-96cc-4744-bead-d4b0ee2d7112)
-### Data info:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/5cc2ae9b-6e59-4bfd-a437-1a4c64f64d46)
+### Initial dataset:
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/b959cad1-b495-493a-840e-6daa72f6574b)
+### Data Info:
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/fc86bb86-aef9-4083-858e-c9156c2c0f6b)
 ### Optimization of null values:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/fb1f31b6-8d68-4f9d-90e7-1628ca709441)
-### Assignment of x and y values:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/93173468-5e9a-48a9-a65b-30821f8a727c)
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/d359669d-cfbd-4cfb-a2d5-4f83464d9f9c)
-### Converting string literals to numerical values using label encoder:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/9280d42d-a07c-45d0-980f-0b56c89c0649)
-### Accuracy:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/ccee6012-a206-4c9b-a689-4aee74302378)
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/632ef939-cfae-404e-8d8b-6d7095518144)
+### Converting string literals to numericl values using label encoder:
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/3c2874cf-bb7c-4776-8a41-fb4c491a82b4)
+### Assigning x and y values:
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/f8aa3eea-a505-44f6-a74b-59665bd1f6c6)
+### Mean Squared Error:
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/1d8fb8bd-6829-4740-8eb8-575e682a0a58)
+### R2 (variance):
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/6f8e1c44-3857-448f-b57c-b877a51e118d)
 ### Prediction:
-![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/d113bd74-982f-43e1-8401-b8726b0e6576)
+![image](https://github.com/SASIDEVIvenaram/Implementation-of-Decision-Tree-Regressor-Model-for-Predicting-the-Salary-of-the-Employee/assets/118707332/94e01ce8-0433-4678-bf85-365b2dc119a7)
+
 
 
 
